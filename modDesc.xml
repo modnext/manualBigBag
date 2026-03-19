@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="106">
+  <author>aaw3k</author>
+  <version>1.0.0.0</version>
+
+  <title>
+    <en>Manual Big Bag</en>
+    <de>Big Bags Manuell Öffnen</de>
+    <fr>Ouverture Manuelle Des Big Bags</fr>
+    <pl>Ręczne Otwieranie Big Baga</pl>
+    <ru>Ручное Открытие Биг-бэга</ru>
+  </title>
+
+  <description>
+    <en><![CDATA[
+Add a touch of realism to your game by manually opening the discharge spout of Big Bags. Instead of your bags automatically emptying the moment they are positioned over a container, you now need to hop out of your vehicle, walk up to the suspended Big Bag, and start the unloading process yourself.
+
+Features:
+- Manual discharge control works with all standard and modded Big Bags.
+- Works perfectly when you have bags suspended on loaders, excavators, or telehandlers.
+- Simple and natural interaction using standard controls.
+
+Hotkeys:
+- Press 'I' to manually open the spout and begin unloading (you need to be on foot near the Big Bag).
+
+For more info, bug reports, or to contribute, check out GitHub (modnext/manualBigBag).
+]]></en>
+    <de><![CDATA[
+Bringe etwas mehr Realismus in dein Spiel, indem du den Auslauf von Big Bags manuell öffnest. Anstatt dass sich die Säcke automatisch entleeren, sobald sie über einem Behälter hängen, musst du nun aus deinem Fahrzeug steigen, zu dem schwebenden Big Bag gehen und den Vorgang selbst starten.
+
+Funktionen:
+- Die manuelle Entladekontrolle funktioniert mit allen gewöhnlichen und gemoddeten Big Bags.
+- Klappt wunderbar, wenn du Säcke an Ladern, Baggern oder Teleskopladern hängen hast.
+- Einfache und natürliche Bedienung über die Standardtasten.
+
+Tastenkombinationen:
+- Drücke 'I', um den Auslauf manuell zu öffnen und das Entladen zu starten (du musst dazu zu Fuß in der Nähe des Big Bags sein).
+
+Für mehr Infos, Fehlermeldungen oder kleine Beiträge schau einfach auf GitHub vorbei (modnext/manualBigBag).
+]]></de>
+    <fr><![CDATA[
+Ajoutez une touche de réalisme à votre jeu en ouvrant vous-même le bec verseur des Big Bags. Au lieu que vos sacs se vident tout seuls dès qu'ils sont au-dessus d'un conteneur, vous devez maintenant descendre de votre véhicule, vous approcher du sac suspendu et lancer le déchargement.
+
+Fonctionnalités :
+- Le contrôle manuel du déchargement fonctionne avec tous les Big Bags, qu'ils soient standards ou issus de mods.
+- Pratique lorsque vous avez des sacs suspendus à des chargeurs, des pelles ou des chariots télescopiques.
+- Utilisation simple et naturelle avec les touches classiques.
+
+Raccourcis clavier :
+- Appuyez sur 'I' pour ouvrir manuellement le bec verseur et commencer le déchargement (il faut être à pied près du Big Bag).
+
+Pour plus d'infos, signaler un bug ou apporter votre aide, rendez-vous sur GitHub (modnext/manualBigBag).
+]]></fr>
+    <pl><![CDATA[
+Dodaj trochę realizmu do swojej rozgrywki, otwierając spust w Big Bagach całkowicie ręcznie. Zamiast automatycznego wysypywania się zawartości od razu po podjechaniu nad siewnik czy przyczepę, musisz teraz po prostu wysiąść z maszyny, podejść do podwieszonego worka i samemu rozpocząć rozładunek.
+
+Funkcje:
+- Ręczna kontrola rozładunku działa ze wszystkimi standardowymi i zmodowanymi workami Big Bag.
+- Działa świetnie gdy masz podwieszone worki na ładowaczach, koparkach, czy ładowarkach teleskopowych.
+- Prosta i naturalna obsługa za pomocą standardowych przycisków.
+
+Skróty klawiszowe:
+- Wciśnij 'I', aby ręcznie otworzyć spust i rozpocząć rozładunek (musisz być pieszo blisko Big Baga).
+
+Więcej informacji, zgłaszanie błędów czy pomoc w rozwoju znajdziecie na moim GitHubie (modnext/manualBigBag).
+]]></pl>
+    <ru><![CDATA[
+Добавьте немного реализма в свою игру, открывая выпускной рукав биг-бэгов вручную. Вместо того, чтобы мешок автоматически высыпал содержимое, как только окажется над сеялкой или прицепом, вам теперь нужно просто выйти из машины, подойти к подвешенному мешку и начать процесс разгрузки самостоятельно.
+
+Особенности:
+- Ручное управление разгрузкой работает со всеми стандартными и модифицированными биг-бэгами.
+- Отлично подходит, когда у вас подвешены мешки на погрузчиках, экскаваторах или телескопических погрузчиках.
+- Простое и естественное взаимодействие с помощью стандартных кнопок.
+
+Горячие клавиши:
+- Нажмите «I», чтобы вручную открыть рукав и начать разгрузку (нужно быть пешком рядом с биг-бэгом).
+
+Для получения дополнительной информации, сообщений об ошибках или участия загляните на GitHub (modnext/manualBigBag).
+]]></ru>
+  </description>
+
+  <l10n filenamePrefix="l10n/l10n" />
+
+  <iconFilename>icon_manualBigBag.dds</iconFilename>
+  <multiplayer supported="true" />
+
+  <extraSourceFiles>
+    <sourceFile filename="scripts/AdditionalSpecialization.lua" />
+    <sourceFile filename="scripts/AdditionalGuiElements.lua" />
+    <sourceFile filename="scripts/extensions/HandToolHandsExtension.lua" />
+  </extraSourceFiles>
+
+  <specializations>
+    <specialization name="manualBigBag" className="ManualBigBag" filename="scripts/specializations/ManualBigBag.lua"/>
+  </specializations>
+
+  <handToolSpecializations>
+    <specialization name="handToolManualBigBag" className="HandToolManualBigBag" filename="scripts/handTools/specializations/HandToolManualBigBag.lua"/>
+  </handToolSpecializations>
+
+  <actions>
+    <action name="TOGGLE_UNLOAD_ON_FOOT" axisType="HALF" displayCategory="PLAYER_INTERACTIVE" />
+  </actions>
+
+  <inputBinding>
+    <actionBinding action="TOGGLE_UNLOAD_ON_FOOT">
+      <binding device="KB_MOUSE_DEFAULT" input="KEY_i" />
+    </actionBinding>
+  </inputBinding>
+</modDesc>

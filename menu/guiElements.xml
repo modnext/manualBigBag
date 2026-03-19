@@ -1,0 +1,10 @@
+<texture>
+  <meta>
+    <filename>guiElements.png</filename>
+    <size width="256" height="256"/>
+  </meta>
+  <slices>
+    <slice id="open_bigBag" uvs="2px 2px 70px 70px"/>
+    <slice id="close_bigBag" uvs="74px 2px 70px 70px"/>
+  </slices>
+</texture>
