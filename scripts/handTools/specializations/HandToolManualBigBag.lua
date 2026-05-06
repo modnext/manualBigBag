@@ -195,6 +195,10 @@ function HandToolManualBigBag:onToggleUnloadAction(actionId, inputValue)
   if isDischargeActive then
     unloadVehicle:setDischargeState(Dischargeable.DISCHARGE_STATE_OFF)
   else
+    if dischargeNode.raycast ~= nil and (dischargeNode.raycast.yOffset or 0) < 0.5 then
+      dischargeNode.raycast.yOffset = 0.8
+    end
+
     local hitObject = dischargeNode.dischargeHitObject
     local isOnVehicle = hitObject ~= nil and hitObject:isa(Vehicle)
 
@@ -242,12 +246,6 @@ function HandToolManualBigBag:getUnloadVehicle(player)
     return nil
   end
 
-  -- object:raiseActive()
-
-  if dischargeNode.raycast ~= nil and (dischargeNode.raycast.yOffset or 0) < 0.5 then
-    dischargeNode.raycast.yOffset = 0.8
-  end
-
   local isDischargeActive = dischargeSpec.currentDischargeState ~= Dischargeable.DISCHARGE_STATE_OFF
 
   if isDischargeActive then
@@ -258,18 +256,7 @@ function HandToolManualBigBag:getUnloadVehicle(player)
     return nil
   end
 
-  local hitObject = dischargeNode.dischargeHitObject
-  local isOnVehicle = hitObject ~= nil and hitObject:isa(Vehicle)
-
-  if not isOnVehicle then
-    isOnVehicle = self:getHasVehicleUnderneath(dischargeNode, object)
-  end
-
-  local canDischargeToObject = object:getCanDischargeToObject(dischargeNode)
-  local canDischargeToGround = object:getCanDischargeToGround(dischargeNode) and object:getCanDischargeToLand(dischargeNode) and object:getCanDischargeAtPosition(dischargeNode)
-  local hasValidTarget = canDischargeToObject or (canDischargeToGround and not isOnVehicle)
-
-  return hasValidTarget and object or nil
+  return object
 end
 
 ---Checks if the vehicle's discharge node is above the minimum height from the ground
