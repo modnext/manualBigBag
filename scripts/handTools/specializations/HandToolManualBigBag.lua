@@ -14,6 +14,7 @@ HandToolManualBigBag.SPEC_TABLE_NAME = "spec_" .. g_currentModName .. ".handTool
 HandToolManualBigBag.TARGET_MASK = CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
 HandToolManualBigBag.TARGET_MAX_DISTANCE = 4
 HandToolManualBigBag.MIN_DISCHARGE_HEIGHT = 0.3
+HandToolManualBigBag.VALIDATION_INTERVAL = 250
 
 ---Register all functions from the specialization that can be called on handTool level
 -- @param table handToolType hand tool type
@@ -52,6 +53,9 @@ function HandToolManualBigBag:onLoad(xmlFile, baseDirectory)
 
   spec.unloadVehicle = nil
   spec.toggleActionEventId = nil
+
+  spec.lastValidationTime = 0
+  spec.lastValidationResult = false
 
   spec.actionText = g_i18n:getText("action_manualBigBag")
   spec.actionStopText = g_i18n:getText("action_stopManualBigBag")
@@ -195,10 +199,6 @@ function HandToolManualBigBag:onToggleUnloadAction(actionId, inputValue)
   if isDischargeActive then
     unloadVehicle:setDischargeState(Dischargeable.DISCHARGE_STATE_OFF)
   else
-    if dischargeNode.raycast ~= nil and (dischargeNode.raycast.yOffset or 0) < 0.5 then
-      dischargeNode.raycast.yOffset = 0.8
-    end
-
     local hitObject = dischargeNode.dischargeHitObject
     local isOnVehicle = hitObject ~= nil and hitObject:isa(Vehicle)
 
@@ -256,7 +256,30 @@ function HandToolManualBigBag:getUnloadVehicle(player)
     return nil
   end
 
-  return object
+  local spec = self[HandToolManualBigBag.SPEC_TABLE_NAME]
+  local now = g_time or 0
+
+  if now - spec.lastValidationTime > HandToolManualBigBag.VALIDATION_INTERVAL then
+    spec.lastValidationTime = now
+
+    if dischargeNode.raycast ~= nil and (dischargeNode.raycast.yOffset or 0) < 0.5 then
+      dischargeNode.raycast.yOffset = 0.8
+    end
+
+    local hitObject = dischargeNode.dischargeHitObject
+    local isOnVehicle = hitObject ~= nil and hitObject:isa(Vehicle)
+
+    if not isOnVehicle then
+      isOnVehicle = self:getHasVehicleUnderneath(dischargeNode, object)
+    end
+
+    local canDischargeToObject = object:getCanDischargeToObject(dischargeNode)
+    local canDischargeToGround = object:getCanDischargeToGround(dischargeNode) and object:getCanDischargeToLand(dischargeNode) and object:getCanDischargeAtPosition(dischargeNode)
+
+    spec.lastValidationResult = canDischargeToObject or (canDischargeToGround and not isOnVehicle)
+  end
+
+  return spec.lastValidationResult and object or nil
 end
 
 ---Checks if the vehicle's discharge node is above the minimum height from the ground
