@@ -12,6 +12,7 @@ HandToolManualBigBag.SPEC_TABLE_NAME = "spec_" .. g_currentModName .. ".handTool
 
 ---
 HandToolManualBigBag.TARGET_MASK = CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
+HandToolManualBigBag.VEHICLE_UNDERNEATH_MASK = CollisionFlag.VEHICLE
 HandToolManualBigBag.TARGET_MAX_DISTANCE = 4
 HandToolManualBigBag.MIN_DISCHARGE_HEIGHT = 0.3
 
@@ -341,9 +342,13 @@ function HandToolManualBigBag:getHasVehicleUnderneath(dischargeNode, bigbagObjec
     dx, dy, dz = localDirectionToWorld(dischargeNode.raycast.node, 0, -1, 0)
   end
 
-  raycastAll(x, y, z, dx, dy, dz, dischargeNode.maxDistance, "manualBigBagVehicleUnderneathRaycastCallback", self, HandToolManualBigBag.TARGET_MASK)
+  raycastAll(x, y, z, dx, dy, dz, dischargeNode.maxDistance, "manualBigBagVehicleUnderneathRaycastCallback", self, HandToolManualBigBag.VEHICLE_UNDERNEATH_MASK)
 
-  return spec.vehicleRaycastResult
+  local result = spec.vehicleRaycastResult
+  spec.vehicleRaycastResult = nil
+  spec.vehicleRaycastIgnore = nil
+
+  return result
 end
 
 ---Raycast callback for vehicle-underneath detection
