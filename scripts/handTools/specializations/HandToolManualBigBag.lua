@@ -14,7 +14,6 @@ HandToolManualBigBag.SPEC_TABLE_NAME = "spec_" .. g_currentModName .. ".handTool
 HandToolManualBigBag.TARGET_MASK = CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
 HandToolManualBigBag.TARGET_MAX_DISTANCE = 4
 HandToolManualBigBag.MIN_DISCHARGE_HEIGHT = 0.3
-HandToolManualBigBag.VALIDATION_INTERVAL = 250
 
 ---Register all functions from the specialization that can be called on handTool level
 -- @param table handToolType hand tool type
@@ -22,6 +21,7 @@ function HandToolManualBigBag.registerFunctions(handToolType)
   SpecializationUtil.registerFunction(handToolType, "getHasUnloadTarget", HandToolManualBigBag.getHasUnloadTarget)
   SpecializationUtil.registerFunction(handToolType, "getUnloadVehicle", HandToolManualBigBag.getUnloadVehicle)
   SpecializationUtil.registerFunction(handToolType, "isAboveMinHeight", HandToolManualBigBag.isAboveMinHeight)
+  SpecializationUtil.registerFunction(handToolType, "prepareDischargeNode", HandToolManualBigBag.prepareDischargeNode)
   SpecializationUtil.registerFunction(handToolType, "getHasVehicleUnderneath", HandToolManualBigBag.getHasVehicleUnderneath)
   SpecializationUtil.registerFunction(handToolType, "vehicleUnderneathRaycastCallback", HandToolManualBigBag.vehicleUnderneathRaycastCallback)
 end
@@ -53,9 +53,6 @@ function HandToolManualBigBag:onLoad(xmlFile, baseDirectory)
 
   spec.unloadVehicle = nil
   spec.toggleActionEventId = nil
-
-  spec.lastValidationTime = 0
-  spec.lastValidationResult = false
 
   spec.actionText = g_i18n:getText("action_manualBigBag")
   spec.actionStopText = g_i18n:getText("action_stopManualBigBag")
@@ -176,7 +173,7 @@ function HandToolManualBigBag:onDraw()
   end
 end
 
----Toggle the unload action for the targeted big bag or pallet
+---Toggles the unload action for the targeted big bag or pallet
 -- @param integer actionId the action event id
 -- @param float inputValue the input value
 function HandToolManualBigBag:onToggleUnloadAction(actionId, inputValue)
@@ -197,29 +194,60 @@ function HandToolManualBigBag:onToggleUnloadAction(actionId, inputValue)
   local isDischargeActive = dischargeSpec.currentDischargeState ~= Dischargeable.DISCHARGE_STATE_OFF
 
   if isDischargeActive then
-    unloadVehicle:setDischargeState(Dischargeable.DISCHARGE_STATE_OFF)
-  else
-    local hitObject = dischargeNode.dischargeHitObject
-    local isOnVehicle = hitObject ~= nil and hitObject:isa(Vehicle)
-
-    if not isOnVehicle then
-      isOnVehicle = self:getHasVehicleUnderneath(dischargeNode, unloadVehicle)
-    end
-
-    local canDischargeToObject = unloadVehicle:getCanDischargeToObject(dischargeNode)
-    local canDischargeToGround = unloadVehicle:getCanDischargeToGround(dischargeNode) and unloadVehicle:getCanDischargeToLand(dischargeNode) and unloadVehicle:getCanDischargeAtPosition(dischargeNode)
-
-    if canDischargeToObject then
-      unloadVehicle:setDischargeState(Dischargeable.DISCHARGE_STATE_OBJECT)
-    elseif canDischargeToGround and not isOnVehicle then
-      unloadVehicle:setDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
-    end
+    unloadVehicle:setManualDischargeState(Dischargeable.DISCHARGE_STATE_OFF)
+    return
   end
+
+  self:prepareDischargeNode(dischargeNode)
+
+  if not self:isAboveMinHeight(unloadVehicle) then
+    g_currentMission:showBlinkingWarning(g_i18n:getText("warning_actionNotAllowedHere"), 2000)
+    return
+  end
+
+  -- discharge to object
+  if unloadVehicle:getCanDischargeToObject(dischargeNode) then
+    unloadVehicle:setManualDischargeState(Dischargeable.DISCHARGE_STATE_OBJECT)
+    return
+  end
+
+  -- discharge to ground
+  if unloadVehicle:getCanDischargeToGround(dischargeNode) then
+    if not unloadVehicle:getCanDischargeToLand(dischargeNode) then
+      g_currentMission:showBlinkingWarning(g_i18n:getText("warning_youDontHaveAccessToThisLand"), 2000)
+      return
+    end
+
+    local canDischarge = unloadVehicle:getCanDischargeAtPosition(dischargeNode)
+
+    if canDischarge then
+      local hitObject = dischargeNode.dischargeHitObject
+      local isOnVehicle = hitObject ~= nil and hitObject.isa ~= nil and hitObject:isa(Vehicle)
+
+      if not isOnVehicle then
+        isOnVehicle = self:getHasVehicleUnderneath(dischargeNode, unloadVehicle)
+      end
+
+      canDischarge = not isOnVehicle
+    end
+
+    if canDischarge then
+      unloadVehicle:setManualDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
+    else
+      g_currentMission:showBlinkingWarning(g_i18n:getText("warning_actionNotAllowedHere"), 2000)
+    end
+
+    return
+  end
+
+  -- show discharge-specific warning or fallback
+  local warningText = unloadVehicle:getDischargeNotAllowedWarning(dischargeNode)
+  g_currentMission:showBlinkingWarning(warningText, 2000)
 end
 
 ---Gets the targeted dischargeable vehicle (BigBag/Pallet) from the player's targeter
 -- @param table player the carrying player
--- @return table|nil unloadVehicle the targeted vehicle or nil
+-- @return table|nil the targeted vehicle or nil
 function HandToolManualBigBag:getUnloadVehicle(player)
   local targetNode = player.targeter:getClosestTargetedNodeFromType(HandToolManualBigBag)
 
@@ -229,13 +257,13 @@ function HandToolManualBigBag:getUnloadVehicle(player)
 
   local object = g_currentMission:getNodeObject(targetNode)
 
-  if object == nil then
+  if object == nil or (object.spec_bigBag == nil and object.spec_pallet == nil) then
     return nil
   end
 
   local dischargeSpec = object.spec_dischargeable
 
-  if dischargeSpec == nil or #dischargeSpec.dischargeNodes == 0 then
+  if dischargeSpec == nil or dischargeSpec.dischargeNodes == nil or #dischargeSpec.dischargeNodes == 0 then
     return nil
   end
 
@@ -246,45 +274,19 @@ function HandToolManualBigBag:getUnloadVehicle(player)
     return nil
   end
 
+  -- prepare node only when not already discharging
   local isDischargeActive = dischargeSpec.currentDischargeState ~= Dischargeable.DISCHARGE_STATE_OFF
 
-  if isDischargeActive then
-    return object
+  if not isDischargeActive then
+    self:prepareDischargeNode(dischargeNode)
   end
 
-  if not self:isAboveMinHeight(object) then
-    return nil
-  end
-
-  local spec = self[HandToolManualBigBag.SPEC_TABLE_NAME]
-  local now = g_time or 0
-
-  if now - spec.lastValidationTime > HandToolManualBigBag.VALIDATION_INTERVAL then
-    spec.lastValidationTime = now
-
-    if dischargeNode.raycast ~= nil and (dischargeNode.raycast.yOffset or 0) < 0.5 then
-      dischargeNode.raycast.yOffset = 0.8
-    end
-
-    local hitObject = dischargeNode.dischargeHitObject
-    local isOnVehicle = hitObject ~= nil and hitObject:isa(Vehicle)
-
-    if not isOnVehicle then
-      isOnVehicle = self:getHasVehicleUnderneath(dischargeNode, object)
-    end
-
-    local canDischargeToObject = object:getCanDischargeToObject(dischargeNode)
-    local canDischargeToGround = object:getCanDischargeToGround(dischargeNode) and object:getCanDischargeToLand(dischargeNode) and object:getCanDischargeAtPosition(dischargeNode)
-
-    spec.lastValidationResult = canDischargeToObject or (canDischargeToGround and not isOnVehicle)
-  end
-
-  return spec.lastValidationResult and object or nil
+  return object
 end
 
 ---Checks if the vehicle's discharge node is above the minimum height from the ground
 -- @param table object the vehicle to check
--- @return boolean isAboveMinHeight true if above the minimum height
+-- @return boolean true if above the minimum height
 function HandToolManualBigBag:isAboveMinHeight(object)
   local dischargeSpec = object.spec_dischargeable
   local dischargeNode = dischargeSpec.currentDischargeNode
@@ -299,8 +301,19 @@ function HandToolManualBigBag:isAboveMinHeight(object)
   return (y - terrainHeight) > HandToolManualBigBag.MIN_DISCHARGE_HEIGHT
 end
 
----Checks if a valid unload target is currently available
--- @return boolean hasTarget true if the player has a valid unload target
+---Adjusts the raycast yOffset on the discharge node before the game's own raycast runs
+-- @param table dischargeNode the discharge node
+function HandToolManualBigBag:prepareDischargeNode(dischargeNode)
+  local raycast = dischargeNode.raycast
+
+  if raycast ~= nil and (raycast.yOffset or 0) < 0.5 then
+    raycast.yOffset = 0.8
+  end
+end
+
+
+---Checks if a manual unload object is currently targeted
+-- @return boolean hasTarget true if the player has a manual unload target
 function HandToolManualBigBag:getHasUnloadTarget()
   local spec = self[HandToolManualBigBag.SPEC_TABLE_NAME]
 
@@ -352,7 +365,7 @@ function HandToolManualBigBag:vehicleUnderneathRaycastCallback(hitActorId, x, y,
     return true
   end
 
-  if object ~= nil and object:isa(Vehicle) then
+  if object ~= nil and object.isa ~= nil and object:isa(Vehicle) then
     spec.vehicleRaycastResult = true
     return false
   end
