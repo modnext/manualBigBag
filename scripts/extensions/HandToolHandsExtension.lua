@@ -7,7 +7,7 @@
 
 ---Hide default crosshairs when manual BigBag crosshair is active
 local function onHandToolHandsOnDraw(handTool, superFunc)
-  if handTool.getHasUnloadTarget ~= nil and handTool:getHasUnloadTarget() then
+  if handTool.getManualBigBagHasUnloadTarget ~= nil and handTool:getManualBigBagHasUnloadTarget() then
     return
   end
 

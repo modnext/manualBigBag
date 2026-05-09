@@ -18,12 +18,12 @@ HandToolManualBigBag.MIN_DISCHARGE_HEIGHT = 0.3
 ---Register all functions from the specialization that can be called on handTool level
 -- @param table handToolType hand tool type
 function HandToolManualBigBag.registerFunctions(handToolType)
-  SpecializationUtil.registerFunction(handToolType, "getHasUnloadTarget", HandToolManualBigBag.getHasUnloadTarget)
-  SpecializationUtil.registerFunction(handToolType, "getUnloadVehicle", HandToolManualBigBag.getUnloadVehicle)
-  SpecializationUtil.registerFunction(handToolType, "isAboveMinHeight", HandToolManualBigBag.isAboveMinHeight)
-  SpecializationUtil.registerFunction(handToolType, "prepareDischargeNode", HandToolManualBigBag.prepareDischargeNode)
-  SpecializationUtil.registerFunction(handToolType, "getHasVehicleUnderneath", HandToolManualBigBag.getHasVehicleUnderneath)
-  SpecializationUtil.registerFunction(handToolType, "vehicleUnderneathRaycastCallback", HandToolManualBigBag.vehicleUnderneathRaycastCallback)
+  SpecializationUtil.registerFunction(handToolType, "getManualBigBagHasUnloadTarget", HandToolManualBigBag.getHasUnloadTarget)
+  SpecializationUtil.registerFunction(handToolType, "getManualBigBagUnloadVehicle", HandToolManualBigBag.getUnloadVehicle)
+  SpecializationUtil.registerFunction(handToolType, "isManualBigBagAboveMinHeight", HandToolManualBigBag.isAboveMinHeight)
+  SpecializationUtil.registerFunction(handToolType, "prepareManualBigBagDischargeNode", HandToolManualBigBag.prepareDischargeNode)
+  SpecializationUtil.registerFunction(handToolType, "getManualBigBagHasVehicleUnderneath", HandToolManualBigBag.getHasVehicleUnderneath)
+  SpecializationUtil.registerFunction(handToolType, "manualBigBagVehicleUnderneathRaycastCallback", HandToolManualBigBag.vehicleUnderneathRaycastCallback)
 end
 
 ---Register all events that should be called for this specialization
@@ -133,7 +133,7 @@ function HandToolManualBigBag:onUpdate(dt)
 
   local spec = self[HandToolManualBigBag.SPEC_TABLE_NAME]
 
-  spec.unloadVehicle = self:getUnloadVehicle(carryingPlayer)
+  spec.unloadVehicle = self:getManualBigBagUnloadVehicle(carryingPlayer)
 
   local isActive = spec.unloadVehicle ~= nil
 
@@ -198,9 +198,9 @@ function HandToolManualBigBag:onToggleUnloadAction(actionId, inputValue)
     return
   end
 
-  self:prepareDischargeNode(dischargeNode)
+  self:prepareManualBigBagDischargeNode(dischargeNode)
 
-  if not self:isAboveMinHeight(unloadVehicle) then
+  if not self:isManualBigBagAboveMinHeight(unloadVehicle) then
     g_currentMission:showBlinkingWarning(g_i18n:getText("warning_actionNotAllowedHere"), 2000)
     return
   end
@@ -225,7 +225,7 @@ function HandToolManualBigBag:onToggleUnloadAction(actionId, inputValue)
       local isOnVehicle = hitObject ~= nil and hitObject.isa ~= nil and hitObject:isa(Vehicle)
 
       if not isOnVehicle then
-        isOnVehicle = self:getHasVehicleUnderneath(dischargeNode, unloadVehicle)
+        isOnVehicle = self:getManualBigBagHasVehicleUnderneath(dischargeNode, unloadVehicle)
       end
 
       canDischarge = not isOnVehicle
@@ -278,7 +278,7 @@ function HandToolManualBigBag:getUnloadVehicle(player)
   local isDischargeActive = dischargeSpec.currentDischargeState ~= Dischargeable.DISCHARGE_STATE_OFF
 
   if not isDischargeActive then
-    self:prepareDischargeNode(dischargeNode)
+    self:prepareManualBigBagDischargeNode(dischargeNode)
   end
 
   return object
@@ -311,7 +311,6 @@ function HandToolManualBigBag:prepareDischargeNode(dischargeNode)
   end
 end
 
-
 ---Checks if a manual unload object is currently targeted
 -- @return boolean hasTarget true if the player has a manual unload target
 function HandToolManualBigBag:getHasUnloadTarget()
@@ -342,7 +341,7 @@ function HandToolManualBigBag:getHasVehicleUnderneath(dischargeNode, bigbagObjec
     dx, dy, dz = localDirectionToWorld(dischargeNode.raycast.node, 0, -1, 0)
   end
 
-  raycastAll(x, y, z, dx, dy, dz, dischargeNode.maxDistance, "vehicleUnderneathRaycastCallback", self, HandToolManualBigBag.TARGET_MASK)
+  raycastAll(x, y, z, dx, dy, dz, dischargeNode.maxDistance, "manualBigBagVehicleUnderneathRaycastCallback", self, HandToolManualBigBag.TARGET_MASK)
 
   return spec.vehicleRaycastResult
 end
