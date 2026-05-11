@@ -2,10 +2,10 @@
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="アンロード / アンロードを停止" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="荷下ろしする" />
 
     <!-- Actions -->
-    <e k="action_manualBigBag" v="アンロード" />
-    <e k="action_stopManualBigBag" v="アンロードを停止" />
+    <e k="action_manualBigBag" v="荷を下ろす" />
+    <e k="action_stopManualBigBag" v="荷下ろしをやめる" />
   </elements>
 </l10n>

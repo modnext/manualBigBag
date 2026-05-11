@@ -2,10 +2,10 @@
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Aflæs / Stop aflæsning" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Læs af" />
 
     <!-- Actions -->
-    <e k="action_manualBigBag" v="Aflæs" />
+    <e k="action_manualBigBag" v="Læs af" />
     <e k="action_stopManualBigBag" v="Stop aflæsning" />
   </elements>
 </l10n>

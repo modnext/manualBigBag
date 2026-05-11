@@ -2,10 +2,10 @@
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Ürítés / Ürítés leállítása" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Kirakodás" />
 
     <!-- Actions -->
-    <e k="action_manualBigBag" v="Ürítés" />
+    <e k="action_manualBigBag" v="Kirakodás" />
     <e k="action_stopManualBigBag" v="Ürítés leállítása" />
   </elements>
 </l10n>

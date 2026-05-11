@@ -2,10 +2,10 @@
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Scarica / Ferma lo scarico" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Scarica" />
 
     <!-- Actions -->
     <e k="action_manualBigBag" v="Scarica" />
-    <e k="action_stopManualBigBag" v="Ferma lo scarico" />
+    <e k="action_stopManualBigBag" v="Arresta scaricamento" />
   </elements>
 </l10n>

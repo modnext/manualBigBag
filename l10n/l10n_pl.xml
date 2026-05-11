@@ -2,10 +2,10 @@
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Rozładuj / Zatrzymaj Rozładunek" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Rozładuj" />
 
     <!-- Actions -->
     <e k="action_manualBigBag" v="Rozładuj" />
-    <e k="action_stopManualBigBag" v="Zatrzymaj Rozładunek" />
+    <e k="action_stopManualBigBag" v="Przerwij wyładowywanie" />
   </elements>
 </l10n>
