@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <text name="input_TOGGLE_UNLOAD_ON_FOOT" text="Tyhjennä / Lopeta tyhjennys" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Tyhjennä / Lopeta tyhjennys" />
 
     <!-- Actions -->
-    <text name="action_manualBigBag" text="Tyhjennä" />
-    <text name="action_stopManualBigBag" text="Lopeta tyhjennys" />
+    <e k="action_manualBigBag" v="Tyhjennä" />
+    <e k="action_stopManualBigBag" v="Lopeta tyhjennys" />
   </elements>
 </l10n>

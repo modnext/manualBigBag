@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <text name="input_TOGGLE_UNLOAD_ON_FOOT" text="卸载 / 停止卸载" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="卸载 / 停止卸载" />
 
     <!-- Actions -->
-    <text name="action_manualBigBag" text="卸载" />
-    <text name="action_stopManualBigBag" text="停止卸载" />
+    <e k="action_manualBigBag" v="卸载" />
+    <e k="action_stopManualBigBag" v="停止卸载" />
   </elements>
 </l10n>
