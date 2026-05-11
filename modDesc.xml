@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="106">
+<modDesc descVersion="108">
   <author>aaw3k</author>
-  <version>1.0.0.0</version>
+  <version>1.1.0.0</version>
 
   <title>
     <en>Manual Big Bag</en>
@@ -23,6 +23,11 @@ Features:
 Hotkeys:
 - Press 'I' to manually open the spout and begin unloading (you need to be on foot near the Big Bag).
 
+Changelog Version 1.1.0.0:
+- Improved discharge validation and warning logic for smoother behavior.
+- Various stability improvements to prevent crashes.
+- Various text / translation adjustments.
+
 For more info, bug reports, or to contribute, check out GitHub (modnext/manualBigBag).
 ]]></en>
     <de><![CDATA[
@@ -35,6 +40,11 @@ Funktionen:
 
 Tastenkombinationen:
 - Drücke 'I', um den Auslauf manuell zu öffnen und das Entladen zu starten (du musst dazu zu Fuß in der Nähe des Big Bags sein).
+
+Changelog Version 1.1.0.0:
+- Verbesserte Entladevalidierung und Warnlogik für ein reibungsloseres Verhalten.
+- Verschiedene Stabilitätsverbesserungen zur Fehlervermeidung.
+- Diverse Text- / Übersetzungsanpassungen.
 
 Für mehr Infos, Fehlermeldungen oder kleine Beiträge schau einfach auf GitHub vorbei (modnext/manualBigBag).
 ]]></de>
@@ -49,6 +59,11 @@ Fonctionnalités :
 Raccourcis clavier :
 - Appuyez sur 'I' pour ouvrir manuellement le bec verseur et commencer le déchargement (il faut être à pied près du Big Bag).
 
+Changelog Version 1.1.0.0 :
+- Amélioration de la validation du déchargement et de la logique d'avertissement pour un comportement plus fluide.
+- Diverses améliorations de stabilité pour éviter les plantages.
+- Divers ajustements de texte / traduction.
+
 Pour plus d'infos, signaler un bug ou apporter votre aide, rendez-vous sur GitHub (modnext/manualBigBag).
 ]]></fr>
     <pl><![CDATA[
@@ -62,6 +77,11 @@ Funkcje:
 Skróty klawiszowe:
 - Wciśnij 'I', aby ręcznie otworzyć spust i rozpocząć rozładunek (musisz być pieszo blisko Big Baga).
 
+Changelog Version 1.1.0.0:
+- Ulepszono logikę walidacji rozładunku i system ostrzeżeń dla płynniejszego działania.
+- Różne poprawki stabilności zapobiegające awariom.
+- Różne poprawki tekstu / tłumaczeń.
+
 Więcej informacji, zgłaszanie błędów czy pomoc w rozwoju znajdziecie na moim GitHubie (modnext/manualBigBag).
 ]]></pl>
     <ru><![CDATA[
@@ -74,6 +94,11 @@ Więcej informacji, zgłaszanie błędów czy pomoc w rozwoju znajdziecie na moi
 
 Горячие клавиши:
 - Нажмите «I», чтобы вручную открыть рукав и начать разгрузку (нужно быть пешком рядом с биг-бэгом).
+
+Changelog Version 1.1.0.0:
+- Улучшена логика проверки разгрузки и система предупреждений для более плавной работы.
+- Различные улучшения стабильности для предотвращения сбоев.
+- Различные корректировки текста / перевода.
 
 Для получения дополнительной информации, сообщений об ошибках или участия загляните на GitHub (modnext/manualBigBag).
 ]]></ru>
