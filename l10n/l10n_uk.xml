@@ -7,5 +7,8 @@
     <!-- Actions -->
     <e k="action_manualBigBag" v="Розвантажити" />
     <e k="action_stopManualBigBag" v="Зупинити розвантажування" />
+
+    <!-- Warnings -->
+    <e k="warning_unloadTargetTooLow" v="Підніміть вантаж вище перед розвантаженням!" />
   </elements>
 </l10n>

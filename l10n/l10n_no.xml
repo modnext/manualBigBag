@@ -7,5 +7,8 @@
     <!-- Actions -->
     <e k="action_manualBigBag" v="Loss" />
     <e k="action_stopManualBigBag" v="Stopp lossing" />
+
+    <!-- Warnings -->
+    <e k="warning_unloadTargetTooLow" v="Løft lasten høyere før lossing!" />
   </elements>
 </l10n>

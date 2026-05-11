@@ -7,5 +7,8 @@
     <!-- Actions -->
     <e k="action_manualBigBag" v="Bongkar Muatan" />
     <e k="action_stopManualBigBag" v="Hentikan pembongkaran muatan" />
+
+    <!-- Warnings -->
+    <e k="warning_unloadTargetTooLow" v="Angkat muatan lebih tinggi sebelum membongkar!" />
   </elements>
 </l10n>

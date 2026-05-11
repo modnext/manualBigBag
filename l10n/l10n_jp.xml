@@ -7,5 +7,8 @@
     <!-- Actions -->
     <e k="action_manualBigBag" v="荷を下ろす" />
     <e k="action_stopManualBigBag" v="荷下ろしをやめる" />
+
+    <!-- Warnings -->
+    <e k="warning_unloadTargetTooLow" v="荷下ろしする前に荷物をもっと高く上げてください！" />
   </elements>
 </l10n>

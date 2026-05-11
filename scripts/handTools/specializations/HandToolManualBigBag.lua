@@ -202,7 +202,7 @@ function HandToolManualBigBag:onToggleUnloadAction(actionId, inputValue)
   self:prepareManualBigBagDischargeNode(dischargeNode)
 
   if not self:isManualBigBagAboveMinHeight(unloadVehicle) then
-    g_currentMission:showBlinkingWarning(g_i18n:getText("warning_actionNotAllowedHere"), 2000)
+    g_currentMission:showBlinkingWarning(g_i18n:getText("warning_unloadTargetTooLow"), 2000)
     return
   end
 

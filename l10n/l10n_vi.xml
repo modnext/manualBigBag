@@ -7,5 +7,8 @@
     <!-- Actions -->
     <e k="action_manualBigBag" v="Dỡ" />
     <e k="action_stopManualBigBag" v="Dừng dỡ" />
+
+    <!-- Warnings -->
+    <e k="warning_unloadTargetTooLow" v="Nâng hàng lên cao hơn trước khi dỡ!" />
   </elements>
 </l10n>
