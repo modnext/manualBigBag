@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <text name="input_TOGGLE_UNLOAD_ON_FOOT" text="Ürítés / Ürítés leállítása" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Ürítés / Ürítés leállítása" />
 
     <!-- Actions -->
-    <text name="action_manualBigBag" text="Ürítés" />
-    <text name="action_stopManualBigBag" text="Ürítés leállítása" />
+    <e k="action_manualBigBag" v="Ürítés" />
+    <e k="action_stopManualBigBag" v="Ürítés leállítása" />
   </elements>
 </l10n>

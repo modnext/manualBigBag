@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <text name="input_TOGGLE_UNLOAD_ON_FOOT" text="Vyložit / Zastavit vykládání" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Vyložit / Zastavit vykládání" />
 
     <!-- Actions -->
-    <text name="action_manualBigBag" text="Vyložit" />
-    <text name="action_stopManualBigBag" text="Zastavit vykládání" />
+    <e k="action_manualBigBag" v="Vyložit" />
+    <e k="action_stopManualBigBag" v="Zastavit vykládání" />
   </elements>
 </l10n>

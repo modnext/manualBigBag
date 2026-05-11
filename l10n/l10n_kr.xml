@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <text name="input_TOGGLE_UNLOAD_ON_FOOT" text="하역 / 하역 중지" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="하역 / 하역 중지" />
 
     <!-- Actions -->
-    <text name="action_manualBigBag" text="하역" />
-    <text name="action_stopManualBigBag" text="하역 중지" />
+    <e k="action_manualBigBag" v="하역" />
+    <e k="action_stopManualBigBag" v="하역 중지" />
   </elements>
 </l10n>

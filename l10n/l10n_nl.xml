@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <text name="input_TOGGLE_UNLOAD_ON_FOOT" text="Lossen / Lossen stoppen" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Lossen / Lossen stoppen" />
 
     <!-- Actions -->
-    <text name="action_manualBigBag" text="Lossen" />
-    <text name="action_stopManualBigBag" text="Lossen stoppen" />
+    <e k="action_manualBigBag" v="Lossen" />
+    <e k="action_stopManualBigBag" v="Lossen stoppen" />
   </elements>
 </l10n>

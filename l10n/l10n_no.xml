@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <text name="input_TOGGLE_UNLOAD_ON_FOOT" text="Tøm / Stopp tømming" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Tøm / Stopp tømming" />
 
     <!-- Actions -->
-    <text name="action_manualBigBag" text="Tøm" />
-    <text name="action_stopManualBigBag" text="Stopp tømming" />
+    <e k="action_manualBigBag" v="Tøm" />
+    <e k="action_stopManualBigBag" v="Stopp tømming" />
   </elements>
 </l10n>

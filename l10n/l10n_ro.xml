@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <text name="input_TOGGLE_UNLOAD_ON_FOOT" text="Descărcare / Oprire descărcare" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Descărcare / Oprire descărcare" />
 
     <!-- Actions -->
-    <text name="action_manualBigBag" text="Descărcare" />
-    <text name="action_stopManualBigBag" text="Oprire descărcare" />
+    <e k="action_manualBigBag" v="Descărcare" />
+    <e k="action_stopManualBigBag" v="Oprire descărcare" />
   </elements>
 </l10n>
