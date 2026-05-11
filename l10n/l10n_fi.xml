@@ -2,10 +2,10 @@
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Tyhjennä / Lopeta tyhjennys" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Pura lasti" />
 
     <!-- Actions -->
-    <e k="action_manualBigBag" v="Tyhjennä" />
-    <e k="action_stopManualBigBag" v="Lopeta tyhjennys" />
+    <e k="action_manualBigBag" v="Pura lasti" />
+    <e k="action_stopManualBigBag" v="Lopeta lastin purku" />
   </elements>
 </l10n>

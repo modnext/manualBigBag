@@ -2,10 +2,10 @@
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="하역 / 하역 중지" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="내리기" />
 
     <!-- Actions -->
-    <e k="action_manualBigBag" v="하역" />
-    <e k="action_stopManualBigBag" v="하역 중지" />
+    <e k="action_manualBigBag" v="내리기" />
+    <e k="action_stopManualBigBag" v="내리기 중지" />
   </elements>
 </l10n>

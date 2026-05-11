@@ -2,10 +2,10 @@
 <l10n>
   <elements>
     <!-- Input Bindings -->
-    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Разгрузить / Остановить разгрузку" />
+    <e k="input_TOGGLE_UNLOAD_ON_FOOT" v="Разгрузить" />
 
     <!-- Actions -->
     <e k="action_manualBigBag" v="Разгрузить" />
-    <e k="action_stopManualBigBag" v="Остановить разгрузку" />
+    <e k="action_stopManualBigBag" v="Прекратить разгрузку" />
   </elements>
 </l10n>
