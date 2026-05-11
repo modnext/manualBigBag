@@ -7,5 +7,8 @@
     <!-- Actions -->
     <e k="action_manualBigBag" v="Scarica" />
     <e k="action_stopManualBigBag" v="Arresta scaricamento" />
+
+    <!-- Warnings -->
+    <e k="warning_unloadTargetTooLow" v="Solleva di più il carico prima di scaricare!" />
   </elements>
 </l10n>

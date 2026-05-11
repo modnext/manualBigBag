@@ -7,5 +7,8 @@
     <!-- Actions -->
     <e k="action_manualBigBag" v="Lossen" />
     <e k="action_stopManualBigBag" v="Lossen beëindigen" />
+
+    <!-- Warnings -->
+    <e k="warning_unloadTargetTooLow" v="Til de lading hoger op voordat je lost!" />
   </elements>
 </l10n>

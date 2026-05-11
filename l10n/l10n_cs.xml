@@ -7,5 +7,8 @@
     <!-- Actions -->
     <e k="action_manualBigBag" v="卸货" />
     <e k="action_stopManualBigBag" v="停止卸载" />
+
+    <!-- Warnings -->
+    <e k="warning_unloadTargetTooLow" v="卸货前请将货物抬高！" />
   </elements>
 </l10n>

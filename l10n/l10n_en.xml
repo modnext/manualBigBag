@@ -7,5 +7,8 @@
     <!-- Actions -->
     <e k="action_manualBigBag" v="Unload" />
     <e k="action_stopManualBigBag" v="Stop unloading" />
+
+    <!-- Warnings -->
+    <e k="warning_unloadTargetTooLow" v="Raise the load higher before unloading!" />
   </elements>
 </l10n>

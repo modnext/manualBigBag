@@ -7,5 +7,8 @@
     <!-- Actions -->
     <e k="action_manualBigBag" v="Pura lasti" />
     <e k="action_stopManualBigBag" v="Lopeta lastin purku" />
+
+    <!-- Warnings -->
+    <e k="warning_unloadTargetTooLow" v="Nosta kuorma korkeammalle ennen purkamista!" />
   </elements>
 </l10n>

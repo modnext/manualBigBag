@@ -7,5 +7,8 @@
     <!-- Actions -->
     <e k="action_manualBigBag" v="Boşalt" />
     <e k="action_stopManualBigBag" v="Boşaltmayı durdur" />
+
+    <!-- Warnings -->
+    <e k="warning_unloadTargetTooLow" v="Boşaltmadan önce yükü daha yükseğe kaldır!" />
   </elements>
 </l10n>

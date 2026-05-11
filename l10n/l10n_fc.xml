@@ -7,5 +7,8 @@
     <!-- Actions -->
     <e k="action_manualBigBag" v="Décharger" />
     <e k="action_stopManualBigBag" v="Arrêter le déchargement" />
+
+    <!-- Warnings -->
+    <e k="warning_unloadTargetTooLow" v="Levez davantage le chargement avant de décharger !" />
   </elements>
 </l10n>
