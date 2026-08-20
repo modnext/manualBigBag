@@ -163,6 +163,8 @@ function HandToolManualBigBag:onUpdate(dt)
   g_inputBinding:setActionEventActive(spec.toggleActionEventId, isActive)
 
   if isActive then
+    spec.unloadVehicle:raiseActive()
+
     if spec.unloadVehicle:getDischargeState() == Dischargeable.DISCHARGE_STATE_OFF then
       g_inputBinding:setActionEventText(spec.toggleActionEventId, spec.actionText)
     else
