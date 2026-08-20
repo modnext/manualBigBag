@@ -19,6 +19,27 @@ function ManualBigBag.registerOverwrittenFunctions(vehicleType)
   SpecializationUtil.registerOverwrittenFunction(vehicleType, "setDischargeState", ManualBigBag.setDischargeState)
 end
 
+function ManualBigBag.registerEventListeners(vehicleType)
+  SpecializationUtil.registerEventListener(vehicleType, "onLoad", ManualBigBag)
+end
+
+---Configures the default discharge raycast equally on the server and every client
+function ManualBigBag:onLoad()
+  local spec = self.spec_dischargeable
+
+  if spec == nil or spec.dischargeNodes == nil then
+    return
+  end
+
+  for _, dischargeNode in ipairs(spec.dischargeNodes) do
+    local raycast = dischargeNode.raycast
+
+    if raycast ~= nil and raycast.yOffset < 0.5 then
+      raycast.yOffset = 0.8
+    end
+  end
+end
+
 ---Allow automatic discharge only if we are already manually discharging to the ground
 -- @param function superFunc original function
 -- @param table dischargeNode discharge node
