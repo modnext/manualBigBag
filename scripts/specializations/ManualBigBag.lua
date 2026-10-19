@@ -21,6 +21,7 @@ end
 
 function ManualBigBag.registerEventListeners(vehicleType)
   SpecializationUtil.registerEventListener(vehicleType, "onLoad", ManualBigBag)
+  SpecializationUtil.registerEventListener(vehicleType, "onDischargeTargetObjectChanged", ManualBigBag)
 end
 
 ---Configures the default discharge raycast equally on the server and every client
@@ -34,12 +35,26 @@ function ManualBigBag:onLoad()
   end
 end
 
----Disable automatic opening of the spout
+---Switch an already open spout to a newly detected discharge target
+-- @param table|nil object the new discharge target
+function ManualBigBag:onDischargeTargetObjectChanged(object)
+  if not self.isServer or object == nil then
+    return
+  end
+
+  local spec = self.spec_dischargeable
+
+  if spec.currentDischargeState == Dischargeable.DISCHARGE_STATE_GROUND and self:getCanToggleDischargeToObject() and self:getCanDischargeToObject(spec.currentDischargeNode) then
+    self:handleFoundDischargeObject(spec.currentDischargeNode)
+  end
+end
+
+---Allow switching to an object only after manually starting ground discharge
 -- @param function superFunc original function
 -- @param table dischargeNode discharge node
 -- @return boolean true if should auto-discharge to object
 function ManualBigBag:getDischargeNodeAutomaticDischarge(superFunc, dischargeNode)
-  return false
+  return self.spec_dischargeable.currentDischargeState == Dischargeable.DISCHARGE_STATE_GROUND
 end
 
 ---Ensure the vehicle stays awake when discharge state is set manually via handtools
