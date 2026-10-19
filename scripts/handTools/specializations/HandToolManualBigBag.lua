@@ -68,6 +68,8 @@ function HandToolManualBigBag:onLoad(xmlFile, baseDirectory)
       spec.closeCrosshair:setColor(nil, nil, nil, 0.25)
     end
   end
+
+  SpecializationUtil.removeEventListener(self, "onDraw", HandToolHands)
 end
 
 ---Called on deleting
@@ -167,6 +169,7 @@ end
 ---Called on draw
 function HandToolManualBigBag:onDraw()
   if not self:getManualBigBagHasUnloadTarget() then
+    HandToolHands.onDraw(self)
     return
   end
 
