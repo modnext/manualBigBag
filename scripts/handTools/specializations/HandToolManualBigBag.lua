@@ -5,6 +5,7 @@
 -- Copyright (C) Mod Next, All Rights Reserved.
 --
 
+-- @class HandToolManualBigBag: HandTool, HandToolHands
 HandToolManualBigBag = {}
 
 ---
@@ -19,11 +20,11 @@ HandToolManualBigBag.MIN_DISCHARGE_HEIGHT = 0.3
 ---Register all functions from the specialization that can be called on handTool level
 -- @param table handToolType hand tool type
 function HandToolManualBigBag.registerFunctions(handToolType)
-  SpecializationUtil.registerFunction(handToolType, "getManualBigBagHasUnloadTarget", HandToolManualBigBag.getHasUnloadTarget)
-  SpecializationUtil.registerFunction(handToolType, "getManualBigBagUnloadVehicle", HandToolManualBigBag.getUnloadVehicle)
-  SpecializationUtil.registerFunction(handToolType, "isManualBigBagAboveMinHeight", HandToolManualBigBag.isAboveMinHeight)
-  SpecializationUtil.registerFunction(handToolType, "getManualBigBagHasVehicleUnderneath", HandToolManualBigBag.getHasVehicleUnderneath)
-  SpecializationUtil.registerFunction(handToolType, "manualBigBagVehicleUnderneathRaycastCallback", HandToolManualBigBag.vehicleUnderneathRaycastCallback)
+  SpecializationUtil.registerFunction(handToolType, "getManualBigBagHasUnloadTarget", HandToolManualBigBag.getManualBigBagHasUnloadTarget)
+  SpecializationUtil.registerFunction(handToolType, "getManualBigBagUnloadVehicle", HandToolManualBigBag.getManualBigBagUnloadVehicle)
+  SpecializationUtil.registerFunction(handToolType, "isManualBigBagAboveMinHeight", HandToolManualBigBag.isManualBigBagAboveMinHeight)
+  SpecializationUtil.registerFunction(handToolType, "getManualBigBagHasVehicleUnderneath", HandToolManualBigBag.getManualBigBagHasVehicleUnderneath)
+  SpecializationUtil.registerFunction(handToolType, "manualBigBagVehicleUnderneathRaycastCallback", HandToolManualBigBag.manualBigBagVehicleUnderneathRaycastCallback)
 end
 
 ---Register all events that should be called for this specialization
@@ -238,7 +239,7 @@ end
 -- @param table player the carrying player
 -- @param integer|nil targetNode hit node or nil to use the closest target
 -- @return table|nil the targeted vehicle or nil
-function HandToolManualBigBag:getUnloadVehicle(player, targetNode)
+function HandToolManualBigBag:getManualBigBagUnloadVehicle(player, targetNode)
   if player == nil or player.targeter == nil then
     return nil
   end
@@ -265,7 +266,7 @@ end
 ---Checks if the discharge node is above the minimum height from the ground
 -- @param table dischargeNode the discharge node to check
 -- @return boolean true if above the minimum height
-function HandToolManualBigBag:isAboveMinHeight(dischargeNode)
+function HandToolManualBigBag:isManualBigBagAboveMinHeight(dischargeNode)
   local x, y, z = getWorldTranslation(dischargeNode.node)
   local terrainHeight = getTerrainHeightAtWorldPos(g_terrainNode, x, 0, z)
 
@@ -274,7 +275,7 @@ end
 
 ---Checks if a manual unload object is currently targeted
 -- @return boolean hasTarget true if the player has a manual unload target
-function HandToolManualBigBag:getHasUnloadTarget()
+function HandToolManualBigBag:getManualBigBagHasUnloadTarget()
   local spec = self[HandToolManualBigBag.SPEC_TABLE_NAME]
 
   return spec.unloadVehicle ~= nil and spec.toggleActionEventId ~= nil and spec.openCrosshair ~= nil and spec.closeCrosshair ~= nil
@@ -284,7 +285,7 @@ end
 -- @param table dischargeNode the discharge node of the Big Bag
 -- @param table bigbagObject the Big Bag object itself (to exclude from results)
 -- @return boolean true if a vehicle is directly underneath
-function HandToolManualBigBag:getHasVehicleUnderneath(dischargeNode, bigbagObject)
+function HandToolManualBigBag:getManualBigBagHasVehicleUnderneath(dischargeNode, bigbagObject)
   local hitObject = dischargeNode ~= nil and dischargeNode.dischargeHitObject or nil
 
   if hitObject ~= nil and hitObject.isa ~= nil and hitObject:isa(Vehicle) then
@@ -325,7 +326,7 @@ end
 -- @param float y hit position y
 -- @param float z hit position z
 -- @param float distance hit distance
-function HandToolManualBigBag:vehicleUnderneathRaycastCallback(hitActorId, x, y, z, distance)
+function HandToolManualBigBag:manualBigBagVehicleUnderneathRaycastCallback(hitActorId, x, y, z, distance)
   if hitActorId == nil or hitActorId == 0 then
     return false
   end
