@@ -7,29 +7,6 @@
 
 local modName = g_currentModName
 
--- specializations to add by type manager
-local additionalSpecsByType = {
-  ["vehicle"] = {
-    prerequisite = Dischargeable,
-    specsBySpecialization = {
-      ["pallet"] = {
-        modName .. ".manualBigBag",
-      },
-      ["bigBag"] = {
-        modName .. ".manualBigBag",
-      },
-    },
-  },
-  ["handTool"] = {
-    prerequisite = HandToolHands,
-    specsBySpecialization = {
-      ["hands"] = {
-        modName .. ".handToolManualBigBag",
-      },
-    },
-  },
-}
-
 AdditionalSpecialization = {}
 
 ---Finalize types
@@ -39,22 +16,24 @@ function AdditionalSpecialization.finalizeTypes(typeManager)
     return
   end
 
-  local typeConfig = additionalSpecsByType[typeManager.typeName]
+  if typeManager.typeName == "vehicle" then
+    local specializationName = modName .. ".manualBigBag"
 
-  if typeConfig == nil then
-    return
-  end
+    for typeName, typeEntry in pairs(typeManager:getTypes()) do
+      if SpecializationUtil.hasSpecialization(Dischargeable, typeEntry.specializations)
+        and (typeEntry.specializationsByName.pallet ~= nil or typeEntry.specializationsByName.bigBag ~= nil)
+        and typeEntry.specializationsByName[specializationName] == nil then
+        typeManager:addSpecialization(typeName, specializationName)
+      end
+    end
+  elseif typeManager.typeName == "handTool" then
+    local specializationName = modName .. ".handToolManualBigBag"
 
-  for typeName, typeEntry in pairs(typeManager:getTypes()) do
-    if SpecializationUtil.hasSpecialization(typeConfig.prerequisite, typeEntry.specializations) then
-      for baseSpecializationName, specializationsToAdd in pairs(typeConfig.specsBySpecialization) do
-        if typeEntry.specializationsByName[baseSpecializationName] ~= nil then
-          for _, specializationName in ipairs(specializationsToAdd) do
-            if typeEntry.specializationsByName[specializationName] == nil then
-              typeManager:addSpecialization(typeName, specializationName)
-            end
-          end
-        end
+    for typeName, typeEntry in pairs(typeManager:getTypes()) do
+      if SpecializationUtil.hasSpecialization(HandToolHands, typeEntry.specializations)
+        and typeEntry.specializationsByName.hands ~= nil
+        and typeEntry.specializationsByName[specializationName] == nil then
+        typeManager:addSpecialization(typeName, specializationName)
       end
     end
   end

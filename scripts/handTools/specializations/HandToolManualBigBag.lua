@@ -211,7 +211,7 @@ function HandToolManualBigBag:onToggleUnloadAction(actionId, inputValue)
   local dischargeNode = unloadVehicle:getCurrentDischargeNode()
   local dischargeState, warningText
 
-  if not self:isManualBigBagAboveMinHeight(unloadVehicle) then
+  if not self:isManualBigBagAboveMinHeight(dischargeNode) then
     warningText = g_i18n:getText("warning_unloadTargetTooLow")
   elseif unloadVehicle:getCanToggleDischargeToObject() and unloadVehicle:getCanDischargeToObject(dischargeNode) then
     dischargeState = Dischargeable.DISCHARGE_STATE_OBJECT
@@ -262,20 +262,10 @@ function HandToolManualBigBag:getUnloadVehicle(player, targetNode)
   return object
 end
 
----Checks if the vehicle's discharge node is above the minimum height from the ground
--- @param table object the vehicle to check
+---Checks if the discharge node is above the minimum height from the ground
+-- @param table dischargeNode the discharge node to check
 -- @return boolean true if above the minimum height
-function HandToolManualBigBag:isAboveMinHeight(object)
-  if object == nil or object.spec_dischargeable == nil then
-    return false
-  end
-
-  local dischargeNode = object:getCurrentDischargeNode()
-
-  if dischargeNode == nil or dischargeNode.node == nil or dischargeNode.node == 0 or not entityExists(dischargeNode.node) then
-    return false
-  end
-
+function HandToolManualBigBag:isAboveMinHeight(dischargeNode)
   local x, y, z = getWorldTranslation(dischargeNode.node)
   local terrainHeight = getTerrainHeightAtWorldPos(g_terrainNode, x, 0, z)
 
@@ -343,11 +333,7 @@ function HandToolManualBigBag:vehicleUnderneathRaycastCallback(hitActorId, x, y,
   local spec = self[HandToolManualBigBag.SPEC_TABLE_NAME]
   local object = g_currentMission:getNodeObject(hitActorId)
 
-  if object == spec.vehicleRaycastIgnore then
-    return true
-  end
-
-  if object ~= nil and object.isa ~= nil and object:isa(Vehicle) then
+  if object ~= nil and object ~= spec.vehicleRaycastIgnore and object.isa ~= nil and object:isa(Vehicle) then
     spec.vehicleRaycastResult = true
     return false
   end

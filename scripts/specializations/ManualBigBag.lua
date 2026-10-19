@@ -16,12 +16,12 @@ end
 
 function ManualBigBag.registerOverwrittenFunctions(vehicleType)
   SpecializationUtil.registerOverwrittenFunction(vehicleType, "getDischargeNodeAutomaticDischarge", ManualBigBag.getDischargeNodeAutomaticDischarge)
-  SpecializationUtil.registerOverwrittenFunction(vehicleType, "setDischargeState", ManualBigBag.setDischargeState)
 end
 
 function ManualBigBag.registerEventListeners(vehicleType)
   SpecializationUtil.registerEventListener(vehicleType, "onLoad", ManualBigBag)
   SpecializationUtil.registerEventListener(vehicleType, "onDischargeTargetObjectChanged", ManualBigBag)
+  SpecializationUtil.registerEventListener(vehicleType, "onDischargeStateChanged", ManualBigBag)
 end
 
 ---Configures the default discharge raycast equally on the server and every client
@@ -57,14 +57,10 @@ function ManualBigBag:getDischargeNodeAutomaticDischarge(superFunc, dischargeNod
   return self.spec_dischargeable.currentDischargeState == Dischargeable.DISCHARGE_STATE_GROUND
 end
 
----Ensure the vehicle stays awake when discharge state is set manually via handtools
--- @param function superFunc original function
+---Wake the vehicle when discharge starts; Dischargeable keeps it active afterwards
 -- @param integer state discharge state
--- @param boolean noEventSend no event send
-function ManualBigBag:setDischargeState(superFunc, state, noEventSend)
+function ManualBigBag:onDischargeStateChanged(state)
   if state ~= Dischargeable.DISCHARGE_STATE_OFF then
     self:raiseActive()
   end
-
-  return superFunc(self, state, noEventSend)
 end
