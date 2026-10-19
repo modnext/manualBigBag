@@ -15,7 +15,7 @@ function ManualBigBag.prerequisitesPresent(specializations)
 end
 
 function ManualBigBag.registerOverwrittenFunctions(vehicleType)
-  SpecializationUtil.registerOverwrittenFunction(vehicleType, "getDischargeNodeAutomaticDischarge", ManualBigBag.getDischargeNodeAutomaticDischarge)
+  SpecializationUtil.registerOverwrittenFunction(vehicleType, "getDischargeNodeAutomaticDischarge", ManualBigBag.getManualBigBagDischargeNodeAutomaticDischarge)
 end
 
 function ManualBigBag.registerEventListeners(vehicleType)
@@ -53,7 +53,7 @@ end
 -- @param function superFunc original function
 -- @param table dischargeNode discharge node
 -- @return boolean true if should auto-discharge to object
-function ManualBigBag:getDischargeNodeAutomaticDischarge(superFunc, dischargeNode)
+function ManualBigBag:getManualBigBagDischargeNodeAutomaticDischarge(superFunc, dischargeNode)
   return self.spec_dischargeable.currentDischargeState == Dischargeable.DISCHARGE_STATE_GROUND
 end
 
