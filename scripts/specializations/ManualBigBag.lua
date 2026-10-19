@@ -25,32 +25,20 @@ end
 
 ---Configures the default discharge raycast equally on the server and every client
 function ManualBigBag:onLoad()
-  local spec = self.spec_dischargeable
-
-  if spec == nil or spec.dischargeNodes == nil then
-    return
-  end
-
-  for _, dischargeNode in ipairs(spec.dischargeNodes) do
+  for _, dischargeNode in ipairs(self.spec_dischargeable.dischargeNodes) do
     local raycast = dischargeNode.raycast
 
-    if raycast ~= nil and raycast.yOffset < 0.5 then
+    if raycast.yOffset < 0.5 then
       raycast.yOffset = 0.8
     end
   end
 end
 
----Allow automatic discharge only if we are already manually discharging to the ground
+---Disable automatic opening of the spout
 -- @param function superFunc original function
 -- @param table dischargeNode discharge node
 -- @return boolean true if should auto-discharge to object
 function ManualBigBag:getDischargeNodeAutomaticDischarge(superFunc, dischargeNode)
-  local spec = self.spec_dischargeable
-
-  if spec ~= nil and spec.currentDischargeState == Dischargeable.DISCHARGE_STATE_GROUND then
-    return true
-  end
-
   return false
 end
 
@@ -63,5 +51,5 @@ function ManualBigBag:setDischargeState(superFunc, state, noEventSend)
     self:raiseActive()
   end
 
-  superFunc(self, state, noEventSend)
+  return superFunc(self, state, noEventSend)
 end

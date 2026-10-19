@@ -68,6 +68,8 @@ function HandToolManualBigBag:onLoad(xmlFile, baseDirectory)
       spec.closeCrosshair:setColor(nil, nil, nil, 0.25)
     end
   end
+
+  SpecializationUtil.removeEventListener(self, "onDraw", HandToolHands)
 end
 
 ---Called on deleting
@@ -95,15 +97,7 @@ function HandToolManualBigBag:onHeldStart()
 
   carryingPlayer.targeter:addTargetType(HandToolManualBigBag, HandToolManualBigBag.TARGET_MASK, 0.5, HandToolManualBigBag.TARGET_MAX_DISTANCE)
   carryingPlayer.targeter:addFilterToTargetType(HandToolManualBigBag, function(hitNode)
-    local object = g_currentMission:getNodeObject(hitNode)
-
-    if object == nil or object.isDeleted or object.isDeleting or (object.spec_bigBag == nil and object.spec_pallet == nil) then
-      return false
-    end
-
-    local dischargeSpec = object.spec_dischargeable
-
-    return object:getIsSynchronized() and dischargeSpec ~= nil and object:getCurrentDischargeNode() ~= nil and g_currentMission.accessHandler:canPlayerAccess(object, carryingPlayer)
+    return self:getManualBigBagUnloadVehicle(carryingPlayer, hitNode) ~= nil
   end)
 end
 
@@ -146,14 +140,13 @@ end
 -- @param float dt time since last call in ms
 function HandToolManualBigBag:onUpdate(dt)
   local spec = self[HandToolManualBigBag.SPEC_TABLE_NAME]
-  local carryingPlayer = self:getCarryingPlayer()
 
-  if carryingPlayer == nil or not carryingPlayer.isOwner or not self:getIsHeld() then
+  if not self:getIsActiveForInput(true) then
     spec.unloadVehicle = nil
     return
   end
 
-  spec.unloadVehicle = self:getManualBigBagUnloadVehicle(carryingPlayer)
+  spec.unloadVehicle = self:getManualBigBagUnloadVehicle(self:getCarryingPlayer())
 
   if spec.toggleActionEventId == nil then
     return
@@ -176,6 +169,7 @@ end
 ---Called on draw
 function HandToolManualBigBag:onDraw()
   if not self:getManualBigBagHasUnloadTarget() then
+    HandToolHands.onDraw(self)
     return
   end
 
@@ -196,82 +190,60 @@ end
 -- @param float inputValue the input value
 function HandToolManualBigBag:onToggleUnloadAction(actionId, inputValue)
   local spec = self[HandToolManualBigBag.SPEC_TABLE_NAME]
-  local carryingPlayer = self:getCarryingPlayer()
 
-  if carryingPlayer == nil or not carryingPlayer.isOwner or not self:getIsHeld() then
+  if not self:getIsActiveForInput(true) then
     spec.unloadVehicle = nil
     return
   end
 
-  local unloadVehicle = self:getManualBigBagUnloadVehicle(carryingPlayer)
+  local unloadVehicle = self:getManualBigBagUnloadVehicle(self:getCarryingPlayer())
   spec.unloadVehicle = unloadVehicle
 
   if unloadVehicle == nil then
     return
   end
 
-  local dischargeNode = unloadVehicle:getCurrentDischargeNode()
-  local isDischargeActive = unloadVehicle:getDischargeState() ~= Dischargeable.DISCHARGE_STATE_OFF
-
-  if isDischargeActive then
+  if unloadVehicle:getDischargeState() ~= Dischargeable.DISCHARGE_STATE_OFF then
     unloadVehicle:setManualDischargeState(Dischargeable.DISCHARGE_STATE_OFF)
     return
   end
 
+  local dischargeNode = unloadVehicle:getCurrentDischargeNode()
+  local dischargeState, warningText
+
   if not self:isManualBigBagAboveMinHeight(unloadVehicle) then
-    g_currentMission:showBlinkingWarning(g_i18n:getText("warning_unloadTargetTooLow"), 2000)
-    return
-  end
-
-  -- discharge to object
-  if unloadVehicle:getCanDischargeToObject(dischargeNode) then
-    unloadVehicle:setManualDischargeState(Dischargeable.DISCHARGE_STATE_OBJECT)
-    return
-  end
-
-  -- discharge to ground
-  if unloadVehicle:getCanDischargeToGround(dischargeNode) then
+    warningText = g_i18n:getText("warning_unloadTargetTooLow")
+  elseif unloadVehicle:getCanToggleDischargeToObject() and unloadVehicle:getCanDischargeToObject(dischargeNode) then
+    dischargeState = Dischargeable.DISCHARGE_STATE_OBJECT
+  elseif unloadVehicle:getCanToggleDischargeToGround() and unloadVehicle:getCanDischargeToGround(dischargeNode) then
     if not unloadVehicle:getCanDischargeToLand(dischargeNode) then
-      g_currentMission:showBlinkingWarning(g_i18n:getText("warning_youDontHaveAccessToThisLand"), 2000)
-      return
-    end
-
-    local canDischarge = unloadVehicle:getCanDischargeAtPosition(dischargeNode)
-
-    if canDischarge then
-      local hitObject = dischargeNode.dischargeHitObject
-      local isOnVehicle = hitObject ~= nil and hitObject.isa ~= nil and hitObject:isa(Vehicle)
-
-      if not isOnVehicle then
-        isOnVehicle = self:getManualBigBagHasVehicleUnderneath(dischargeNode, unloadVehicle)
-      end
-
-      canDischarge = not isOnVehicle
-    end
-
-    if canDischarge then
-      unloadVehicle:setManualDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
+      warningText = g_i18n:getText("warning_youDontHaveAccessToThisLand")
+    elseif not unloadVehicle:getCanDischargeAtPosition(dischargeNode) or self:getManualBigBagHasVehicleUnderneath(dischargeNode, unloadVehicle) then
+      warningText = g_i18n:getText("warning_actionNotAllowedHere")
     else
-      g_currentMission:showBlinkingWarning(g_i18n:getText("warning_actionNotAllowedHere"), 2000)
+      dischargeState = Dischargeable.DISCHARGE_STATE_GROUND
     end
-
-    return
+  else
+    warningText = unloadVehicle:getDischargeNotAllowedWarning(dischargeNode)
   end
 
-  -- show discharge-specific warning
-  local warningText = unloadVehicle:getDischargeNotAllowedWarning(dischargeNode)
-  g_currentMission:showBlinkingWarning(warningText, 2000)
+  if dischargeState ~= nil then
+    unloadVehicle:setManualDischargeState(dischargeState)
+  else
+    g_currentMission:showBlinkingWarning(warningText, 2000)
+  end
 end
 
 ---Gets the targeted dischargeable vehicle (BigBag/Pallet) from the player's targeter
 -- @param table player the carrying player
+-- @param integer|nil targetNode hit node or nil to use the closest target
 -- @return table|nil the targeted vehicle or nil
-function HandToolManualBigBag:getUnloadVehicle(player)
+function HandToolManualBigBag:getUnloadVehicle(player, targetNode)
   if player == nil or player.targeter == nil then
     return nil
   end
 
-  local targetNode = player.targeter:getClosestTargetedNodeFromType(HandToolManualBigBag)
+  targetNode = targetNode or player.targeter:getClosestTargetedNodeFromType(HandToolManualBigBag)
 
   if targetNode == nil or targetNode == 0 or not entityExists(targetNode) then
     return nil
@@ -279,13 +251,11 @@ function HandToolManualBigBag:getUnloadVehicle(player)
 
   local object = g_currentMission:getNodeObject(targetNode)
 
-  if object == nil or object.isDeleted or object.isDeleting or (object.spec_bigBag == nil and object.spec_pallet == nil) or not object:getIsSynchronized() then
+  if object == nil or object.isDeleted or object.isDeleting or (object.spec_bigBag == nil and object.spec_pallet == nil) then
     return nil
   end
 
-  local dischargeSpec = object.spec_dischargeable
-
-  if dischargeSpec == nil or object:getCurrentDischargeNode() == nil or not g_currentMission.accessHandler:canPlayerAccess(object, player) then
+  if object.spec_dischargeable == nil or not object:getIsSynchronized() or object:getCurrentDischargeNode() == nil or not g_currentMission.accessHandler:canPlayerAccess(object, player) then
     return nil
   end
 
@@ -325,6 +295,12 @@ end
 -- @param table bigbagObject the Big Bag object itself (to exclude from results)
 -- @return boolean true if a vehicle is directly underneath
 function HandToolManualBigBag:getHasVehicleUnderneath(dischargeNode, bigbagObject)
+  local hitObject = dischargeNode ~= nil and dischargeNode.dischargeHitObject or nil
+
+  if hitObject ~= nil and hitObject.isa ~= nil and hitObject:isa(Vehicle) then
+    return true
+  end
+
   local raycast = dischargeNode ~= nil and dischargeNode.raycast or nil
 
   if raycast == nil or raycast.node == nil or raycast.node == 0 or not entityExists(raycast.node) then
