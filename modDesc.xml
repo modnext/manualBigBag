@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="108">
   <author>aaw3k</author>
-  <version>1.1.0.0</version>
+  <version>1.2.0.0</version>
 
   <title>
     <en>Manual Big Bag</en>
@@ -24,9 +24,16 @@ Hotkeys:
 - Press 'I' to manually open the spout and begin unloading (you need to be on foot near the Big Bag).
 
 Changelog Version 1.1.0.0:
-- Improved discharge validation and warning logic for smoother behavior.
-- Various stability improvements to prevent crashes.
-- Various text / translation adjustments.
+- Improved discharge validation and warning logic
+- Improved stability and crash prevention
+- Updated text and translations
+
+Changelog Version 1.2.0.0:
+- Improved Big Bag detection
+- Fixed interaction near other objects
+- Improved action prompts, crosshair and unloading warnings
+- Improved multiplayer interaction
+- Improved unloading
 
 For more info, bug reports, or to contribute, check out GitHub (modnext/manualBigBag).
 ]]></en>
@@ -41,10 +48,17 @@ Funktionen:
 Tastenkombinationen:
 - Drücke 'I', um den Auslauf manuell zu öffnen und das Entladen zu starten (du musst dazu zu Fuß in der Nähe des Big Bags sein).
 
-Changelog Version 1.1.0.0:
-- Verbesserte Entladevalidierung und Warnlogik für ein reibungsloseres Verhalten.
-- Verschiedene Stabilitätsverbesserungen zur Fehlervermeidung.
-- Diverse Text- / Übersetzungsanpassungen.
+Änderungsprotokoll Version 1.1.0.0:
+- Verbesserte Entladevalidierung und Warnlogik
+- Verbesserte Stabilität zur Vermeidung möglicher Abstürze
+- Aktualisierte Texte und Übersetzungen
+
+Änderungsprotokoll Version 1.2.0.0:
+- Erkennung von Big Bags verbessert
+- Probleme bei der Bedienung neben anderen Objekten behoben
+- Aktionshinweise, Fadenkreuz und Entladewarnungen verbessert
+- Bedienung im Mehrspielermodus verbessert
+- Entladen verbessert
 
 Für mehr Infos, Fehlermeldungen oder kleine Beiträge schau einfach auf GitHub vorbei (modnext/manualBigBag).
 ]]></de>
@@ -59,10 +73,17 @@ Fonctionnalités :
 Raccourcis clavier :
 - Appuyez sur 'I' pour ouvrir manuellement le bec verseur et commencer le déchargement (il faut être à pied près du Big Bag).
 
-Changelog Version 1.1.0.0 :
-- Amélioration de la validation du déchargement et de la logique d'avertissement pour un comportement plus fluide.
-- Diverses améliorations de stabilité pour éviter les plantages.
-- Divers ajustements de texte / traduction.
+Journal des modifications version 1.1.0.0 :
+- Amélioré la validation du déchargement et la logique d'avertissement
+- Amélioré la stabilité et la prévention des plantages
+- Mis à jour les textes et les traductions
+
+Journal des modifications version 1.2.0.0 :
+- Amélioration de la détection des Big Bags
+- Correction des problèmes d'interaction près d'autres objets
+- Amélioration des indications d'action, du réticule et des avertissements de déchargement
+- Amélioration des interactions en multijoueur
+- Amélioration du déchargement
 
 Pour plus d'infos, signaler un bug ou apporter votre aide, rendez-vous sur GitHub (modnext/manualBigBag).
 ]]></fr>
@@ -77,10 +98,17 @@ Funkcje:
 Skróty klawiszowe:
 - Wciśnij 'I', aby ręcznie otworzyć spust i rozpocząć rozładunek (musisz być pieszo blisko Big Baga).
 
-Changelog Version 1.1.0.0:
-- Ulepszono logikę walidacji rozładunku i system ostrzeżeń dla płynniejszego działania.
-- Różne poprawki stabilności zapobiegające awariom.
-- Różne poprawki tekstu / tłumaczeń.
+Lista zmian w wersji 1.1.0.0:
+- Ulepszono walidację rozładunku i logikę ostrzeżeń
+- Poprawiono stabilność i ograniczono ryzyko awarii
+- Zaktualizowano teksty i tłumaczenia
+
+Lista zmian w wersji 1.2.0.0:
+- Poprawiono wykrywanie Big Bagów
+- Naprawiono obsługę w pobliżu innych obiektów
+- Poprawiono podpowiedzi, celownik i ostrzeżenia przy rozładunku
+- Poprawiono obsługę w trybie wieloosobowym
+- Poprawiono rozładunek
 
 Więcej informacji, zgłaszanie błędów czy pomoc w rozwoju znajdziecie na moim GitHubie (modnext/manualBigBag).
 ]]></pl>
@@ -95,10 +123,17 @@ Więcej informacji, zgłaszanie błędów czy pomoc w rozwoju znajdziecie na moi
 Горячие клавиши:
 - Нажмите «I», чтобы вручную открыть рукав и начать разгрузку (нужно быть пешком рядом с биг-бэгом).
 
-Changelog Version 1.1.0.0:
-- Улучшена логика проверки разгрузки и система предупреждений для более плавной работы.
-- Различные улучшения стабильности для предотвращения сбоев.
-- Различные корректировки текста / перевода.
+Журнал изменений версии 1.1.0.0:
+- Улучшена проверка разгрузки и логика предупреждений
+- Улучшена стабильность и снижена вероятность сбоев
+- Обновлены тексты и переводы
+
+Журнал изменений версии 1.2.0.0:
+- Улучшено обнаружение биг-бэгов
+- Исправлено взаимодействие рядом с другими объектами
+- Улучшены подсказки действий, прицел и предупреждения о разгрузке
+- Улучшено взаимодействие в сетевой игре
+- Улучшена разгрузка
 
 Для получения дополнительной информации, сообщений об ошибках или участия загляните на GitHub (modnext/manualBigBag).
 ]]></ru>
@@ -106,13 +141,12 @@ Changelog Version 1.1.0.0:
 
   <l10n filenamePrefix="l10n/l10n" />
 
-  <iconFilename>icon_manualBigBag.dds</iconFilename>
+  <iconFilename>icon_manualBigBag.png</iconFilename>
   <multiplayer supported="true" />
 
   <extraSourceFiles>
     <sourceFile filename="scripts/AdditionalSpecialization.lua" />
     <sourceFile filename="scripts/AdditionalGuiElements.lua" />
-    <sourceFile filename="scripts/extensions/HandToolHandsExtension.lua" />
   </extraSourceFiles>
 
   <specializations>
@@ -120,7 +154,7 @@ Changelog Version 1.1.0.0:
   </specializations>
 
   <handToolSpecializations>
-    <specialization name="handToolManualBigBag" className="HandToolManualBigBag" filename="scripts/handTools/specializations/HandToolManualBigBag.lua"/>
+    <specialization name="handToolManualBigBag" className="HandToolManualBigBag" filename="scripts/handTools/HandToolManualBigBag.lua"/>
   </handToolSpecializations>
 
   <actions>
