@@ -20,7 +20,6 @@ HandToolManualBigBag.MIN_DISCHARGE_HEIGHT = 0.3
 ---Register all functions from the specialization that can be called on handTool level
 -- @param table handToolType hand tool type
 function HandToolManualBigBag.registerFunctions(handToolType)
-  SpecializationUtil.registerFunction(handToolType, "getManualBigBagHasUnloadTarget", HandToolManualBigBag.getManualBigBagHasUnloadTarget)
   SpecializationUtil.registerFunction(handToolType, "getManualBigBagUnloadVehicle", HandToolManualBigBag.getManualBigBagUnloadVehicle)
   SpecializationUtil.registerFunction(handToolType, "isManualBigBagAboveMinHeight", HandToolManualBigBag.isManualBigBagAboveMinHeight)
   SpecializationUtil.registerFunction(handToolType, "getManualBigBagHasVehicleUnderneath", HandToolManualBigBag.getManualBigBagHasVehicleUnderneath)
@@ -169,12 +168,13 @@ end
 
 ---Called on draw
 function HandToolManualBigBag:onDraw()
-  if not self:getManualBigBagHasUnloadTarget() then
+  local spec = self[HandToolManualBigBag.SPEC_TABLE_NAME]
+
+  if spec.unloadVehicle == nil or spec.toggleActionEventId == nil or spec.openCrosshair == nil or spec.closeCrosshair == nil then
     HandToolHands.onDraw(self)
     return
   end
 
-  local spec = self[HandToolManualBigBag.SPEC_TABLE_NAME]
   local carryingPlayer = self:getCarryingPlayer()
 
   if carryingPlayer ~= nil and carryingPlayer.isOwner and carryingPlayer.camera ~= nil and carryingPlayer.camera.isFirstPerson then
@@ -252,7 +252,7 @@ function HandToolManualBigBag:getManualBigBagUnloadVehicle(player, targetNode)
 
   local object = g_currentMission:getNodeObject(targetNode)
 
-  if object == nil or object.isDeleted or object.isDeleting or (object.spec_bigBag == nil and object.spec_pallet == nil) then
+  if object == nil or (object.spec_bigBag == nil and object.spec_pallet == nil) or object:getIsBeingDeleted() then
     return nil
   end
 
@@ -273,28 +273,20 @@ function HandToolManualBigBag:isManualBigBagAboveMinHeight(dischargeNode)
   return (y - terrainHeight) > HandToolManualBigBag.MIN_DISCHARGE_HEIGHT
 end
 
----Checks if a manual unload object is currently targeted
--- @return boolean hasTarget true if the player has a manual unload target
-function HandToolManualBigBag:getManualBigBagHasUnloadTarget()
-  local spec = self[HandToolManualBigBag.SPEC_TABLE_NAME]
-
-  return spec.unloadVehicle ~= nil and spec.toggleActionEventId ~= nil and spec.openCrosshair ~= nil and spec.closeCrosshair ~= nil
-end
-
 ---Checks via synchronous physics raycast if a vehicle is under the Big Bag's discharge node
 -- @param table dischargeNode the discharge node of the Big Bag
 -- @param table bigbagObject the Big Bag object itself (to exclude from results)
 -- @return boolean true if a vehicle is directly underneath
 function HandToolManualBigBag:getManualBigBagHasVehicleUnderneath(dischargeNode, bigbagObject)
-  local hitObject = dischargeNode ~= nil and dischargeNode.dischargeHitObject or nil
+  local hitObject = dischargeNode.dischargeHitObject
 
   if hitObject ~= nil and hitObject.isa ~= nil and hitObject:isa(Vehicle) then
     return true
   end
 
-  local raycast = dischargeNode ~= nil and dischargeNode.raycast or nil
+  local raycast = dischargeNode.raycast
 
-  if raycast == nil or raycast.node == nil or raycast.node == 0 or not entityExists(raycast.node) then
+  if raycast.node == nil or raycast.node == 0 or not entityExists(raycast.node) then
     return false
   end
 
@@ -304,7 +296,7 @@ function HandToolManualBigBag:getManualBigBagHasVehicleUnderneath(dischargeNode,
   spec.vehicleRaycastIgnore = bigbagObject
 
   local x, y, z = getWorldTranslation(raycast.node)
-  y = y + (raycast.yOffset or 0)
+  y = y + raycast.yOffset
 
   local dx, dy, dz = 0, -1, 0
   if not raycast.useWorldNegYDirection then
